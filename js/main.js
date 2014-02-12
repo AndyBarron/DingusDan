@@ -10,7 +10,7 @@ canvas.height = STAGE_H;
 document.body.appendChild(canvas);
 
 // create an new instance of a pixi stage
-var stage = new PIXI.Stage(0x6699FF,true); // make interactive!
+var stage = new PIXI.Stage(0x66CC99,true); // make interactive!
 
 // create a renderer instance.
 var renderer = PIXI.autoDetectRenderer(STAGE_W, STAGE_H, canvas);
@@ -21,44 +21,31 @@ var renderer = PIXI.autoDetectRenderer(STAGE_W, STAGE_H, canvas);
 Input.init({mouseAnchor: canvas});
 requestAnimFrame( animate );
 
-// create a texture from an image path
-var texture1 = PIXI.Texture.fromImage("img/bunny1.png");
-var texture2 = PIXI.Texture.fromImage("img/bunny2.png");
-var textures = [texture1,texture2];
+// load textures
+var textureBunny = PIXI.Texture.fromImage("img/bunny1.png");
 
-// create a new Sprite using the texture
+// create new Sprite using the texture
 
-var BUNNY_COUNT = 500;
-var bunnies = [];
-var speeds = [];
-var angles = [];
+var obstacles = [];
 
-var text = new PIXI.Text("~",{font: "18px Arial", fill: "cyan"});
+var text = new PIXI.Text("",{font: "18px Arial", fill: "cyan"});
 text.position.x = 6;
 text.position.y = 6;
 
-for(var i = 0; i < BUNNY_COUNT; i++){
-    var tx = getRandomElement(textures);
-    var bunny = new PIXI.Sprite(tx);
+var bunny = new PIXI.Sprite(textureBunny);
 
-    // center the sprites anchor point
-    bunny.anchor.x = 0.5;
-    bunny.anchor.y = 0.5;
+// center the sprites anchor point
+bunny.anchor.x = 0.5;
+bunny.anchor.y = 0.5;
 
-    // move the sprite t the center of the screen
-    bunny.position.x = Math.random()*STAGE_W;
-    bunny.position.y = Math.random()*STAGE_H;
+// move the sprite t the center of the screen
+bunny.position.x = STAGE_W/2;
+bunny.position.y = STAGE_H/2;
 
-    bunnies.push(bunny);
-    speeds.push(1 - Math.random()*2);
-    angles.push(0);
+stage.addChild(bunny);
 
-    stage.addChild(bunny);
-}
-
-var mine = bunnies[bunnies.length-1];
-mine.setInteractive(true);
-mine.mousedown = (function(){debug("that tickles!");});
+bunny.setInteractive(true);
+bunny.mousedown = (function(){debug("that tickles!");});
 
 stage.addChild(text);
 
@@ -80,21 +67,7 @@ function animate()
     var delta = (newTime.getTime()-oldTime.getTime())/1000.0;
     oldTime = newTime;
 
-    // just for fun, lets rotate mr rabbit a little
-    for(var i = 0; i < BUNNY_COUNT; i++){
-        var bunny = bunnies[i];
-        var speed = speeds[i];
-        var rot = speeds[i]*2*Math.PI*delta;
-        angles[i] += rot;
-        bunny.rotation += rot;
-        bunny.position.x += delta*50*Math.cos(angles[i]);
-        bunny.position.y += delta*50*Math.sin(angles[i]);
-    }
-
-    mine.scale.x = 2;
-    mine.scale.y = 2;
-    mine.position.x = Input.mouse.x;
-    mine.position.y = Input.mouse.y;
+    bunny.rotation += 2*Math.PI*delta;
 
     deltas.push(delta);
 
@@ -115,7 +88,7 @@ function animate()
       fps = 1/avg;
 
       secToUpdate += 1/updatesPerSec;
-      text.setText(Math.round(fps) + " FPS");
+      text.setText( DEBUG_MODE ? (Math.round(fps) + " FPS") : "" );
     }
 
     secToUpdate -= delta;
