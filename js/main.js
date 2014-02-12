@@ -1,5 +1,5 @@
-var STAGE_W = 800;
-var STAGE_H = 600;
+var STAGE_W = 800*3/4;
+var STAGE_H = 600*3/4;
 
 // console.log(Object.keys(PIXI).sort());
 
@@ -46,7 +46,7 @@ bunny.position.y = STAGE_H/2;
 
 var filter = new PIXI.InvertFilter();
 //bunny.filters = [filter];
-bunny.scale = new PIXI.Point(3,3);
+bunny.scale = new PIXI.Point(2,2);
 
 function addObstacle()
 {
@@ -180,7 +180,7 @@ function animate()
 
       // var touching = oBounds.contains(bunny.position.x, bunny.position.y);
 
-      var touching = recTouch(oBounds,pBounds,-15);
+      var touching = recTouch(oBounds,pBounds,-5);
 
       if (touching)
       {
