@@ -58,6 +58,13 @@ var updatesPerSec = 1;
 var fps = 0;
 var secToUpdate = 1/updatesPerSec;
 
+function keyPress(code)
+{
+  debug(code);
+}
+
+Input.keyPressListeners.push(keyPress);
+
 function animate()
 {
 
@@ -92,6 +99,23 @@ function animate()
     }
 
     secToUpdate -= delta;
+
+    if (Input.anyKeyDown(KEYS_UP))
+    {
+      bunny.position.y -= PLAYER_SPEED*delta;
+    }
+    if (Input.anyKeyDown(KEYS_DOWN))
+    {
+      bunny.position.y += PLAYER_SPEED*delta;
+    }
+    if (Input.anyKeyDown(KEYS_LEFT))
+    {
+      bunny.position.x -= PLAYER_SPEED*delta;
+    }
+    if (Input.anyKeyDown(KEYS_RIGHT))
+    {
+      bunny.position.x += PLAYER_SPEED*delta;
+    }
 
     // console.log(bunnies[0].rotation);
 

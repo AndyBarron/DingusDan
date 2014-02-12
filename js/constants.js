@@ -1,2 +1,9 @@
 DEBUG_INPUT = true;
 DEBUG_MODE = true;
+
+KEYS_UP = [38,87];
+KEYS_DOWN = [40, 83];
+KEYS_LEFT = [37, 65];
+KEYS_RIGHT = [39, 68];
+
+PLAYER_SPEED = 50;
