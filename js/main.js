@@ -14,22 +14,25 @@ var stage = new PIXI.Stage(0x66CC99,true); // make interactive!
 
 // create a renderer instance.
 var renderer = PIXI.autoDetectRenderer(STAGE_W, STAGE_H, canvas);
+debug(renderer);
 
 // add the renderer view element to the DOM
 // document.body.appendChild(renderer.view);
-
-Input.init({mouseAnchor: canvas});
-requestAnimFrame( animate );
 
 // load textures
 var textureBunny = PIXI.Texture.fromImage("img/bunny1.png");
 var textureGreen = PIXI.Texture.fromImage("img/bunny2.png");
 
+textureBunny.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+textureGreen.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+
 // create new Sprite using the texture
 
-var text = new PIXI.Text("",{font: "18px Arial", fill: "cyan"});
+var text = new PIXI.Text("",{font: "24px Arial", fill: "cyan"});
 text.position.x = 6;
 text.position.y = 6;
+
+debug(getData(text));
 
 var bunny = new PIXI.Sprite(textureBunny);
 
@@ -41,7 +44,11 @@ bunny.anchor.y = 0.5;
 bunny.position.x = STAGE_W/2;
 bunny.position.y = STAGE_H/2;
 
-for (var i = 0; i < 100; i++)
+var filter = new PIXI.InvertFilter();
+//bunny.filters = [filter];
+bunny.scale = new PIXI.Point(3,3);
+
+function addObstacle()
 {
   var ob = new PIXI.Sprite(textureGreen);
   ob.position.x = Math.random()*STAGE_W;
@@ -55,13 +62,30 @@ for (var i = 0; i < 100; i++)
   {
     ob.position.y = Math.random()*STAGE_H;
   }
+
+  if(arguments.length == 2)
+  {
+    ob.position.x = arguments[0];
+    ob.position.y = arguments[1];    
+  }
+
+  ob.anchor.x = 0.5;
+  ob.anchor.y = 0.5;
+
   ob.name = "obstacle";
   stage.addChild(ob);
+
+  return ob;
+}
+
+for (var i = 0; i < 100; i++)
+{
+  addObstacle();
 }
 
 stage.addChild(bunny);
 
-bunny.setInteractive(true);
+bunny.interactive = true;
 bunny.mousedown = (function(){debug("that tickles!");});
 
 stage.addChild(text);
@@ -82,6 +106,13 @@ function keyPress(code)
 
 Input.keyPressListeners.push(keyPress);
 
+function onClick(p)
+{
+    addObstacle(p.x,p.y);
+}
+
+Input.mousePressListeners.push(onClick);
+
 function animate()
 {
 
@@ -91,7 +122,7 @@ function animate()
     var delta = (newTime.getTime()-oldTime.getTime())/1000.0;
     oldTime = newTime;
 
-    bunny.rotation += 2*Math.PI*delta;
+    // bunny.rotation += 2*Math.PI*delta/5;
 
     deltas.push(delta);
 
@@ -134,6 +165,8 @@ function animate()
       bunny.position.x += PLAYER_SPEED*delta;
     }
 
+    var pBounds = bunny.getBounds();
+
     for(var i = 0; i < stage.children.length; i++)
     {
       var ob = stage.children[i];
@@ -142,8 +175,14 @@ function animate()
         continue;
       }
       
-      var bounds = ob.getBounds();
-      if (bounds.contains(bunny.position.x, bunny.position.y))
+      var oBounds = ob.getBounds();
+      var pBounds = bunny.getBounds();
+
+      // var touching = oBounds.contains(bunny.position.x, bunny.position.y);
+
+      var touching = recTouch(oBounds,pBounds,-15);
+
+      if (touching)
       {
         debug("OMG TOUCHING");
         stage.removeChild(ob);
@@ -156,3 +195,7 @@ function animate()
     // render the stage   
     renderer.render(stage);
 }
+
+Input.init({mouseAnchor: canvas});
+renderer.render(stage);
+requestAnimFrame( animate );

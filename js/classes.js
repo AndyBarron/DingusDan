@@ -111,6 +111,23 @@ Input.mousePress = function(e) {
 	{
 		Input.mousePressListeners[i].call(null,coords);
 	}
+
+	Input.mouse.down = true;
+}
+
+Input.mouseRelease = function(e) {
+	if ( e.which != 1 ) return;
+
+	var coords = {x: e.offsetX, y: e.offsetY};
+
+	debugInput("mouse release (" + coords.x + "," + coords.y + ")");
+
+	// for(var i = 0; i < Input.mousePressListeners.length; i++)
+	// {
+	// 	Input.mousePressListeners[i].call(null,coords);
+	// }
+
+	Input.mouse.down = false;
 }
 
 Input.isKeyDown = function(code)
