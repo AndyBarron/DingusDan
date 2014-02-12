@@ -55,7 +55,7 @@ for (var i = 0; i < 100; i++)
   {
     ob.position.y = Math.random()*STAGE_H;
   }
-
+  ob.name = "obstacle";
   stage.addChild(ob);
 }
 
@@ -132,6 +132,23 @@ function animate()
     if (Input.anyKeyDown(KEYS_RIGHT))
     {
       bunny.position.x += PLAYER_SPEED*delta;
+    }
+
+    for(var i = 0; i < stage.children.length; i++)
+    {
+      var ob = stage.children[i];
+      if (!exists(ob.name) || ob.name != "obstacle")
+      {
+        continue;
+      }
+      
+      var bounds = ob.getBounds();
+      if (bounds.contains(bunny.position.x, bunny.position.y))
+      {
+        debug("OMG TOUCHING");
+        stage.removeChild(ob);
+        i--;
+      }
     }
 
     // console.log(bunnies[0].rotation);
