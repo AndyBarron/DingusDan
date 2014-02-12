@@ -1,3 +1,27 @@
+function Screen(initFunc, updateFunc, renderFunc)
+{
+	this.initFunc = initFunc;
+	this.updateFunc = updateFunc;
+	this.renderFunc = renderFunc;
+	this.init();
+}
+
+Screen.prototype.init = function()
+{
+	this.initFunc.call(this);
+}
+
+Screen.prototype.update = function(delta)
+{
+	this.updateFunc.call(this,delta);
+}
+
+Screen.prototype.render = function()
+{
+	this.renderFunc.call(this);
+}
+
+
 function Input () {}
 
 Input.on = false;
@@ -123,81 +147,5 @@ Sounds.play = function(name)
 	else
 	{
 		debug('Sound not found: ' + name);
-	}
-}
-
-function Graphics () {}
-
-Graphics.files = [];
-Graphics.fileCount = 0;
-Graphics.filesLoaded = 0;
-Graphics.fileList = [];
-
-Graphics.init = function() {
-	var ids = Entities.ids;
-	var names = Entities.names;
-
-	// load all images
-
-	for(var i = 0; i < ids.length; i++)
-	{
-		for(var j = 0; j < names.length; j++)
-		{
-			var id = ids[i];
-			var name = names[j];
-			var filename = 'spr/'+ id + '_' + name + '.png';
-			var spr = new Sprite(filename);
-			if(spr.image.isErrorImage)
-			{
-				fallback = 'spr/0_' + name + '.png';
-				debug('could not find image "' + filename + '", using fallback image "' +fallback+ "'");
-				spr = new Sprite(fallback);
-			}
-
-			if (!exists(Graphics.files[id]))
-				Graphics.files[id] = {};
-
-			if (name == 'tree' || name == 'sapling') spr.anchor = 7;
-
-			Graphics.fileCount++;
-			Graphics.fileList.push(spr);
-			Graphics.files[id][name] = spr;
-		}
-	}
-
-}
-
-Graphics.scaleSprites = function(){
-
-	var ids = Entities.ids;
-	var names = Entities.names;
-
-
-
-	for(var n = 0; n < names.length; n++)
-	{
-		var nm = names[n];
-		var targetArea = Entities.sizes[nm];
-
-		if(!exists(targetArea))
-		{
-			var total = 0;
-			for(var k = 0; k < ids.length; k++)
-			{
-				var spr = Graphics.files[k][nm];
-				var area = spr.getWidth()*spr.getHeight();
-				total += area;
-			}
-			var avg = total/ids.length;
-			targetArea = avg;
-		}
-
-		for(var m = 0; m < ids.length; m++)
-		{
-			var spr = Graphics.files[m][nm];
-			var area = spr.getWidth()*spr.getHeight();
-			var ratio = targetArea / area;
-			spr.scale = Math.sqrt(ratio);
-		}
 	}
 }
