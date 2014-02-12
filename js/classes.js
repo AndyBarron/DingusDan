@@ -118,9 +118,26 @@ Input.isKeyDown = function(code)
 	return exists(Input.keys[code]);
 }
 
+Input.anyKeyDown = function(codes)
+{
+	for(var i = 0; i < codes.length; i++)
+	{
+		if (Input.isKeyDown(codes[i]))
+		{
+			return true
+		}
+	}
+	return false;
+}
+
 Input.isKeyUp = function(code)
 {
 	return !Input.isKeyDown(code);
+}
+
+Input.areKeysUp = function(codes)
+{
+	return !Input.areKeysUp(codes);
 }
 
 function Sounds () {}
