@@ -23,10 +23,9 @@ requestAnimFrame( animate );
 
 // load textures
 var textureBunny = PIXI.Texture.fromImage("img/bunny1.png");
+var textureGreen = PIXI.Texture.fromImage("img/bunny2.png");
 
 // create new Sprite using the texture
-
-var obstacles = [];
 
 var text = new PIXI.Text("",{font: "18px Arial", fill: "cyan"});
 text.position.x = 6;
@@ -41,6 +40,24 @@ bunny.anchor.y = 0.5;
 // move the sprite t the center of the screen
 bunny.position.x = STAGE_W/2;
 bunny.position.y = STAGE_H/2;
+
+for (var i = 0; i < 100; i++)
+{
+  var ob = new PIXI.Sprite(textureGreen);
+  ob.position.x = Math.random()*STAGE_W;
+  ob.position.y = Math.random()*STAGE_H;
+  while(ob.position.x < bunny.position.x + 50 && ob.position.x > bunny.position.x - 50)
+  {
+    ob.position.x = Math.random()*STAGE_W;
+  }
+
+  while(ob.position.y < bunny.position.y + 50 && ob.position.y > bunny.position.y - 50)
+  {
+    ob.position.y = Math.random()*STAGE_H;
+  }
+
+  stage.addChild(ob);
+}
 
 stage.addChild(bunny);
 
