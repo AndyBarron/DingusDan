@@ -37,12 +37,12 @@ function getRandomInt (max) { //max is EXCLUSIVE?!
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getRandomElement(array)
+function arrayGetRandom(array)
 {
 	return array[getRandomInt(array.length)];
 }
 
-function removeElement(array,element)
+function arrayRemove(array,element)
 {
 	for( var i = 0; i < array.length; i ++ )
 	{

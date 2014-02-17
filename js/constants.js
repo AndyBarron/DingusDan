@@ -1,5 +1,9 @@
-DEBUG_INPUT = true;
+STAGE_W = 800*3/4;
+STAGE_H = 600*3/4;
+
 DEBUG_MODE = true;
+DEBUG_INPUT = false;
+DEBUG_FPS = false;
 
 KEYS_UP = [38,87];
 KEYS_DOWN = [40, 83];
@@ -7,3 +11,5 @@ KEYS_LEFT = [37, 65];
 KEYS_RIGHT = [39, 68];
 
 PLAYER_SPEED = 250;
+
+OBJECT_SCALE = 5;

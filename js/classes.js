@@ -1,8 +1,10 @@
-function Screen(initFunc, updateFunc, renderFunc)
+function Screen(initFunc, updateFunc)
 {
+	this.stage = new PIXI.Stage(0x000000,true);
+
 	this.initFunc = initFunc;
 	this.updateFunc = updateFunc;
-	this.renderFunc = renderFunc;
+
 	this.init();
 }
 
@@ -14,11 +16,6 @@ Screen.prototype.init = function()
 Screen.prototype.update = function(delta)
 {
 	this.updateFunc.call(this,delta);
-}
-
-Screen.prototype.render = function()
-{
-	this.renderFunc.call(this);
 }
 
 
@@ -182,4 +179,17 @@ Sounds.play = function(name)
 	{
 		debug('Sound not found: ' + name);
 	}
+}
+
+function Gfx () {}
+
+Gfx.loadTexture = function(name,smooth)
+{
+	var disableSmoothing = !exists(smooth) || smooth == false;
+	var tex = PIXI.Texture.fromImage("img/" + name + ".png");
+	if ( disableSmoothing )
+	{
+		tex.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+	}
+	return tex;
 }
