@@ -84,3 +84,16 @@ function recTouch(a,b,error) // error > 0 is easier to hit (bigger)
 		return true;
 	}
 }
+
+function spriteZSort(a,b)
+{
+	if(a.position.y < b.position.y)
+	{
+		return -1;
+	}
+	else if (a.position.y > b.position.y)
+	{
+		return 1;
+	}
+	else return 0;
+}

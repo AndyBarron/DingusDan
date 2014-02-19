@@ -3,6 +3,34 @@ function gameScreenInit()
 	var dfw1 = Gfx.loadTexture("dan_f_walk_1");
 	var dfw2 = Gfx.loadTexture("dan_f_walk_2");
 
+    var obstacleTextureNames = [
+        "stapler",
+        "desk",
+        "laptop",
+        "chair"
+    ];
+
+    var obstacleTextures = [];
+
+    for ( var i = 0; i < obstacleTextureNames.length; i++ )
+    {
+        obstacleTextures.push( Gfx.loadTexture(obstacleTextureNames[i]) );
+    }
+
+    this.obstacles = [];
+
+    for( var j = 0; j < 10; j++ )
+    {
+        var ob = new PIXI.Sprite( arrayGetRandom(obstacleTextures) );
+        ob.position.x = Math.random()*STAGE_W;
+        ob.position.y = Math.random()*STAGE_H;
+        ob.scale = new PIXI.Point(OBJECT_SCALE,OBJECT_SCALE);
+        ob.anchor.x = .5;
+        ob.anchor.y = .5;
+        this.obstacles.push(ob);
+        this.stage.addChild(ob);
+    }
+
 	this.dan = new PIXI.MovieClip([dfw1,dfw2]);
 	this.dan.animationSpeed = 0.12;
 	this.dan.play();
@@ -58,6 +86,8 @@ function gameScreenUpdate(delta)
     {
     	this.dan.position.y = STAGE_H - halfh;
     }
+
+    this.stage.children.sort(spriteZSort);
 }
 
 var GameScreen = new Screen(gameScreenInit,gameScreenUpdate);
