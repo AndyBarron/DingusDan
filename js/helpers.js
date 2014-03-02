@@ -1,3 +1,10 @@
+function pointAt(a,b)
+{
+	var dx = b.position.x - a.position.x;
+	var dy = b.position.y - a.position.y;
+	a.rotation = Math.atan2(dx,-dy);
+}
+
 function exists(thing)
 {
 	return (thing !== null) && (typeof thing !== "undefined");
@@ -31,10 +38,14 @@ function debug()
 	}
 }
 
-function getRandomInt (max) { //max is EXCLUSIVE?!
+function getRandomInt(max) { //max is EXCLUSIVE?!
 	max --;
 	var min = 0;
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomBoolean() {
+	return getRandomInt(2) == 0;
 }
 
 function arrayGetRandom(array)
@@ -42,7 +53,7 @@ function arrayGetRandom(array)
 	return array[getRandomInt(array.length)];
 }
 
-function arrayRemove(array,element)
+function arrayRemoveElement(array,element)
 {
 	for( var i = 0; i < array.length; i ++ )
 	{
@@ -54,6 +65,21 @@ function arrayRemove(array,element)
 		}
 	}
 	return false;
+}
+
+function arrayRemoveIndex(array,index)
+{
+	if(0 <= index && index < array.length)
+	{
+		array.splice(index,1);
+		return true;
+	}
+	else return false;
+}
+
+function arrayContains(array,element)
+{
+	return array.indexOf(element) != -1;
 }
 
 function recTouch(a,b,error) // error > 0 is easier to hit (bigger)
@@ -96,4 +122,21 @@ function spriteZSort(a,b)
 		return 1;
 	}
 	else return 0;
+}
+
+function validateObject(o,defaultValue)
+{
+	return exists(o) ? o : defaultValue;
+}
+
+function validateFunction(fn)
+{
+	return exists(fn) ? fn : doNothing;
+}
+
+function doNothing()
+{
+	// an empty function
+	// a command to do nothing
+	// such sweet irony
 }
